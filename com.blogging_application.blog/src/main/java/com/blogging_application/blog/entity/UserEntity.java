@@ -2,7 +2,10 @@ package com.blogging_application.blog.entity;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.CascadeType;
@@ -75,6 +78,14 @@ public class UserEntity {
 	/*
 	 * @Column(name = "user_access") String userAccess;
 	 */
+	
+	/*
+	 * @OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
+	 * List<CommentEntity>listCommentForOneUser = new ArrayList<>();
+	 */
+	
+	@OneToMany(mappedBy = "userEntity",cascade = CascadeType.ALL)
+	Set<CommentEntity>listCommentForOneUser = new HashSet<>();
 
 	public Integer getUserid() {
 		return userid;

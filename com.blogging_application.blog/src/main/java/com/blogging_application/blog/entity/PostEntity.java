@@ -1,5 +1,8 @@
 package com.blogging_application.blog.entity;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,23 +10,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_posts_tbl")
 public class PostEntity {
-	
+
 	@Column(name = "post_id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer postId;
-	
-	@Column(name = "post_title",length = 100, nullable =  false)
+
+	@Column(name = "post_title", length = 100, nullable = false)
 	private String postTitle;
-	
-	@Column(name = "post_content",length = 100000)
+
+	@Column(name = "post_content", length = 100000)
 	private String postContent;
-	
+
 	@Override
 	public String toString() {
 		return "PostEntity [postId=" + postId + ", postTitle=" + postTitle + ", postContent=" + postContent
@@ -33,21 +37,26 @@ public class PostEntity {
 
 	@Column(name = "post_image")
 	private String imageName;
-	
+
 	@Column(name = "post_date")
-	 private Date postDate;
-	
-	
+	private Date postDate;
+
 	@ManyToOne()
 	@JoinColumn(name = "category_id")
-	//Name of this entity in the table would be category_id.
+	// Name of this entity in the table would be category_id.
 	private CategoryEntity categoryEntity;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "user_id")
-	//Name of this entity in the table would be user_id.
+	// Name of this entity in the table would be user_id.
 	private UserEntity userEntity;
-	
+
+	/*
+	 * @OneToMany(mappedBy = "postEntity",cascade = CascadeType.ALL) private
+	 * List<CommentEntity>listCommentForOnePost = new ArrayList<>();
+	 */
+	@OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
+	private Set<CommentEntity> listCommentForOnePost = new HashSet<>();
 
 	public Integer getPostId() {
 		return postId;
@@ -121,7 +130,5 @@ public class PostEntity {
 		this.categoryEntity = categoryEntity;
 		this.userEntity = userEntity;
 	}
-
-
 
 }
