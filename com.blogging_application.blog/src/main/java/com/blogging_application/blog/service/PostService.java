@@ -18,5 +18,8 @@ public interface PostService {
 	List<PostModel> getAllPost();
 
 	PaginationResponse getAllPostWithPagination(Integer pageNumber, Integer pageSize,String sortBy,String sortDirection);
+	
+	List<PostModel>searchPostByTitle(String searchWord);
+	
 
 }

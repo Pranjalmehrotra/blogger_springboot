@@ -14,7 +14,7 @@ import utils.CommonMethods;
 public class UploadFileServiceImpl implements UploadFileService {
 
 	@Override
-	public boolean uploadFile(String pathInputByUser, MultipartFile file) throws IOException {
+	public boolean uploadFile(String folderPathInputByUser, MultipartFile file) throws IOException {
 		List<String> fileExtensionList = List.of("jpg", "png", "jpeg");
 		List<String> fileExtensionsAllowed = new ArrayList<String>(fileExtensionList);
 		// First way of splitting on the basis of "." character
@@ -40,22 +40,22 @@ public class UploadFileServiceImpl implements UploadFileService {
 
 		System.out.println("Actual file name is ::" + getActualFileName);
 
-		File imagesFolder = new File(pathInputByUser);
+		File folderForUploadingFilesByUser = new File(folderPathInputByUser);
 
-		if (!imagesFolder.exists()) {
+		if (!folderForUploadingFilesByUser.exists()) {
 
-			imagesFolder.mkdir();
+			folderForUploadingFilesByUser.mkdir();
 
 		}
 
-		String actualFilePathToBeUploaded = pathInputByUser + file.getOriginalFilename();
+		String actualFilePathToBeUploaded = folderPathInputByUser + file.getOriginalFilename();
 
-		boolean isFileExist = CommonMethods.isFileExist(fileName, imagesFolder);
+		boolean isFileExist = CommonMethods.isFileExist(fileName, folderForUploadingFilesByUser);
 		if (isFileExist) {
 			System.out.println("Image already exist");
-			String updatedFileName = CommonMethods.getDuplicateName(fileName, imagesFolder);
+			String updatedFileName = CommonMethods.getDuplicateName(fileName, folderForUploadingFilesByUser);
 			System.out.println("updated file name::" + updatedFileName);
-			String updatedActualFilePathToBeUploaded = CommonMethods.actualFilePathToBeUploaded(pathInputByUser,
+			String updatedActualFilePathToBeUploaded = CommonMethods.actualFilePathToBeUploaded(folderPathInputByUser,
 					updatedFileName + "." + fileExtension);
 			System.out.println("updated path to be uploaded::" + updatedActualFilePathToBeUploaded);
 //***************************************************************************************************************************************

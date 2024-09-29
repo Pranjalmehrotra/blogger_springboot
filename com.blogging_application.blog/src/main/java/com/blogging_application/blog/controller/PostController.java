@@ -80,5 +80,12 @@ public class PostController {
 				HttpStatus.OK);
 		// return ResponseEntity.ok(null);
 	}
+	
+	@GetMapping(value = "/get-all-posts-keywords/searchWordByTitle/{searchWord}")
+	public ResponseEntity<List<PostModel>>getAllPostWithKeywords(@PathVariable("searchWord") String searchWord){
+		List<PostModel>postSearchedList = this.postService.searchPostByTitle(searchWord);
+		return ResponseEntity.ok(postSearchedList);
+		
+	}
 
 }

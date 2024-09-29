@@ -225,6 +225,16 @@ public class PostServiceImpl implements PostService {
 		return paginationResponse;
 	}
 
+	@Override
+	public List<PostModel> searchPostByTitle(String searchWord) {
+		// TODO Auto-generated method stub
+		List<PostEntity>searchedPostList = this.postRepository.findBypostTitleContaining("%"+searchWord +"%");
+		List<PostModel>searchedPostModelList = searchedPostList.stream().map((post)->{
+			return this.modelMapper.map(post, PostModel.class);
+		}).collect(Collectors.toList());
+		return searchedPostModelList;
+	}
+
 	/*
 	 * private PostModel entityToModel(PostEntity postEntity) { //UserModel
 	 * PostModel postModel = new PostModel(); System.out.println("UserEntity is::"
