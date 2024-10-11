@@ -1,15 +1,18 @@
 package com.blogging_application.blog.service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
 import com.blogging.application.blog.model.PaginationResponse;
 import com.blogging.application.blog.model.PostModel;
 import com.blogging_application.blog.entity.CategoryEntity;
@@ -20,6 +23,7 @@ import com.blogging_application.blog.repository.CategoryRepository;
 import com.blogging_application.blog.repository.PostRepository;
 import com.blogging_application.blog.repository.UserRepository;
 
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -27,14 +31,20 @@ public class PostServiceImpl implements PostService {
 	private ModelMapper modelMapper;
 	private UserRepository userRepository;
 	private CategoryRepository categoryRepository;
-	private CategoryEntity categoryEntity = new CategoryEntity();
+	
+	@Autowired
+	private CategoryEntity categoryEntity ;
+	
 	private UserEntity userEntity = new UserEntity();
 	private PostEntity postEntity = new PostEntity();
 	PaginationResponse paginationResponse = new PaginationResponse();
+	
+	private final String imagePath;
 
+     //Contructor level autowiring  maximum 4 arguments tak le skte hai.
 	public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper, UserRepository userRepository,
-			CategoryRepository categoryRepository) {
-		super();
+			CategoryRepository categoryRepository, 	@Value("${project.images}") String imagePath) {
+		this.imagePath = imagePath;
 		this.postRepository = postRepository;
 		this.modelMapper = modelMapper;
 		this.userRepository = userRepository;
@@ -74,14 +84,12 @@ public class PostServiceImpl implements PostService {
 					.addMapping(PostModel::getCategoryModel, PostEntity::setCategoryEntity);
 
 			// Method 2 ---->Via lambda expression
-
+			
 			/*
 			 * this.modelMapper.createTypeMap(PostModel.class, PostEntity.class)
-			 * .addMapping((PostModel)-> { return PostModel.getUserModel();
-			 * },(PostEntity)->{ return PostEntity.setPostEntity();
-			 * }).addMapping(PostModel:: getCategoryModel, PostEntity::setCategoryEntity);
-			 * 
+			 * .addMapping( src -> src.getUserModel, )
 			 */
+			 
 
 			postEntity = this.modelMapper.map(postModel, PostEntity.class);
 			postEntity.setImageName("default.png");
@@ -111,7 +119,10 @@ public class PostServiceImpl implements PostService {
 		userEntity = this.userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("UserEntity", "userId", userId));
 
-		if (categoryEntity != null && userEntity != null) {
+//		if (categoryEntity != null && userEntity != null) {
+	
+		if (!ObjectUtils.isEmpty(categoryEntity) &&!ObjectUtils.isEmpty(userEntity)) {
+
 			System.out.println("Category enitty is ::" + categoryEntity.toString());
 			System.out.println("User enitty is ::" + userEntity.toString());
 			// postEntity = this.modelMapper.map(postModel, PostEntity.class);

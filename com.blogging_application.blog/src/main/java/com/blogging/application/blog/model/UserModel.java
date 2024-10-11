@@ -1,15 +1,17 @@
 package com.blogging.application.blog.model;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.blogging_application.blog.entity.UserRoleEntity;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserModel {
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(about, emailAddress, mobileNumber, password, privacyAcceptance, termsOfUseAcceptance,
@@ -32,32 +34,41 @@ public class UserModel {
 				&& Objects.equals(userName, other.userName) && Objects.equals(userid, other.userid);
 	}
 
-	private Integer  userid;
-	
+	private Integer userid;
+
 	@NotBlank(message = "Username cannot be empty")
-	@Size(min = 4,max = 20,message = "User name must be minimum of 4 characters")
+	@Size(min = 4, max = 20, message = "User name must be minimum of 4 characters")
 	private String userName;
-	
+
 	@NotBlank(message = "Mobile Number cannot be empty")
-	@Size(min = 10,max = 10,message = "Mobile Number must be of 10 digits")
+	@Size(min = 10, max = 10, message = "Mobile Number must be of 10 digits")
 	private String mobileNumber;
-	
+
 	@NotBlank(message = "Email cannot be empty")
 	@Email(message = "Your email address is not valid")
 	private String emailAddress;
+
 	private Integer termsOfUseAcceptance;
+
 	private Integer privacyAcceptance;
-	
+
 	@NotBlank(message = "password cannot be empty")
-	@Size(min = 8,max=12,message = "Password must be minimum of 8 charcaters and maximum of 12 characters")
+	@Size(min = 8, max = 12, message = "Password must be minimum of 8 charcaters and maximum of 12 characters")
 	private String password;
-	
+
 	@NotBlank(message = "about cannot be empty")
 	private String about;
-	
-	
-	
-	
+
+	private Set<UserRoleModel> roles = new HashSet<>();
+
+	public Set<UserRoleModel> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<UserRoleModel> roles) {
+		this.roles = roles;
+	}
+
 	public Integer getUserId() {
 		return userid;
 	}
@@ -146,7 +157,5 @@ public class UserModel {
 		this.password = password;
 		this.about = about;
 	}
-
-	
 
 }
