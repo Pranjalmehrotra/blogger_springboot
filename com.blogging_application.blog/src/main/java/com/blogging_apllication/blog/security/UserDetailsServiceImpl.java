@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.blogging_application.blog.entity.UserEntity;
 import com.blogging_application.blog.repository.UserRepository;
-
+import org.springframework.security.core.userdetails.User;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		UserEntity existingUser = userRepository
 				.findByUserEmail("%"+email + "%").orElseThrow(() -> new UsernameNotFoundException("User not found for the email:"+email));
 		
-		return new org.springframework.security.core.userdetails.User(existingUser.getEmailAddress(), existingUser.getPassword(), new ArrayList<>());
+		return new User(existingUser.getEmailAddress(), existingUser.getPassword(), new ArrayList<>());
 	}
 
 }

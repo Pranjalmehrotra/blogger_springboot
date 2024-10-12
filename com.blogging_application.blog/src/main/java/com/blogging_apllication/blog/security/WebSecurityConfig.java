@@ -5,12 +5,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,64 +28,23 @@ public class WebSecurityConfig {
 
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	
+
 	@Autowired
-	PasswordEncoder PasswordEncoder;
+	PasswordEncoder passwordEncoder;
 
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		
-//		http
-//			.csrf().disable()
-//			.authorizeRequests()
-//			.antMatchers("/login", "/register").permitAll()
-//			.anyRequest().authenticated()
-//			.and()
-//			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//		http.httpBasic();
-//	
-//	}
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-	/*
-	 * @Override protected void configure(HttpSecurity http) throws Exception {
-	 * 
-	 * http.csrf().authorizeHttpRequests().antMatchers("/login",
-	 * "/register").permitAll().anyRequest().authenticated()
-	 * .and().exceptionHandling().authenticationEntryPoint(this.
-	 * jwtAuthenticationEntryPoint).and() .sessionManagement(management ->
-	 * management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-	 * http.addFilterBefore(this.jwtAuthenticationFilter,
-	 * UsernamePasswordAuthenticationFilter.class); http.httpBasic(withDefaults());
-	 * }
-	 */
-
-	@SuppressWarnings("removal")
-
-	/*
-	 * @Bean SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	 * http.csrf(csrf ->
-	 * csrf.disable()).authorizeHttpRequests().requestMatchers("/login",
-	 * "/register").permitAll()
-	 * .anyRequest().authenticated().and().exceptionHandling()
-	 * .authenticationEntryPoint(this.jwtAuthenticationEntryPoint).and()
-	 * .sessionManagement(management ->
-	 * management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-	 * http.addFilterBefore(this.jwtAuthenticationFilter,
-	 * UsernamePasswordAuthenticationFilter.class); http.httpBasic(withDefaults());
-	 * return http.build(); }
-	 */
-
-	@Bean()
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeHttpRequests().requestMatchers("/login", "/register").permitAll().anyRequest()
-				.authenticated().and().exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
-				.and()
-				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		http.httpBasic(withDefaults());
-		return http.build();
-
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		System.out.println("pranjal securityFilterChain");
+		return http.csrf(csrf -> csrf.disable()).cors(withDefaults())
+				.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/login").permitAll().anyRequest()
+						.authenticated())
+				.formLogin(formLogin -> formLogin.disable())
+				.httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+				.authenticationManager(authenticationManager)
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
 	@Bean
@@ -93,38 +52,21 @@ public class WebSecurityConfig {
 		return new JwtAuthenticationFilter();
 	}
 
+	@Autowired
+	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		System.out.println("pranjal configure");
+		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+	}
+
 	@Bean
-	PasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
-	DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-		authProvider.setUserDetailsService(userDetailsService);
-		authProvider.setPasswordEncoder(passwordEncoder());
-
-		return authProvider;
-	}
-
-	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		// authConfig.authenticationManagerBuilder(authenticationProvider, auth)
 		return authConfig.getAuthenticationManager();
 	}
-
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.userDetailsService(userDetailsService);
-//	}
-//	
-//	
-//	
-//	@Bean
-//	@Override
-//	public AuthenticationManager authenticationManagerBean() throws Exception {
-//	
-//		return super.authenticationManagerBean();
-//	}
 
 }

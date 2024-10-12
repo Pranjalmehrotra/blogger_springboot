@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blogging.application.blog.model.UserModel;
-import com.blogging_application.blog.repository.UserRoleRepository;
 import com.blogging_application.blog.service.UserService;
 
 import jakarta.validation.Valid;
@@ -33,8 +32,9 @@ public class AuthController {
 	@Autowired
 	private JwtTokenHelper jwtTokenHelper;
 
-	@PostMapping("/login")
+	@PostMapping("/loginApi")
 	public ResponseEntity<JwtAuthResponse> login(@RequestBody AuthModel authModel) throws Exception {
+		System.out.println("AuthController.login()");
 
 		authenticate(authModel.getEmail(), authModel.getPassword());
 

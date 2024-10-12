@@ -11,8 +11,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.blogging_application.blog.service.UserService;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -28,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
 	JwtTokenHelper jwtTokenHelper;
-	
+
 	/*
 	 * @Override protected boolean shouldNotFilter(HttpServletRequest request)
 	 * throws ServletException { // TODO Auto-generated // method stub String path =
@@ -93,6 +91,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		filterChain.doFilter(request, response);
 
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		System.out.println("JwtAuthenticationFilter.shouldNotFilter()");
+		return request.getRequestURL().toString().endsWith("/login");
 	}
 
 }
