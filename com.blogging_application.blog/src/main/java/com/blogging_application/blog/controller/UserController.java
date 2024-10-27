@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.blogging.application.blog.model.BlogApiResponse;
-import com.blogging.application.blog.model.UserModel;
+import com.blogging_application.blog.model.BlogApiResponse;
+import com.blogging_application.blog.model.UserModel;
 import com.blogging_application.blog.service.UserService;
 import jakarta.validation.Valid;
 

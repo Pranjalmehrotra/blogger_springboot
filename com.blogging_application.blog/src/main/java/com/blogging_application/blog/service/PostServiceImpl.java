@@ -13,8 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import com.blogging.application.blog.model.PaginationResponse;
-import com.blogging.application.blog.model.PostModel;
+import com.blogging_application.blog.model.PaginationResponse;
+import com.blogging_application.blog.model.PostModel;
 import com.blogging_application.blog.entity.CategoryEntity;
 import com.blogging_application.blog.entity.PostEntity;
 import com.blogging_application.blog.entity.UserEntity;

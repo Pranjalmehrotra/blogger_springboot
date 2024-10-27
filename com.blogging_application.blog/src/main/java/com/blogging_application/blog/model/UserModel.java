@@ -1,10 +1,8 @@
-package com.blogging.application.blog.model;
+package com.blogging_application.blog.model;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import com.blogging_application.blog.entity.UserRoleEntity;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

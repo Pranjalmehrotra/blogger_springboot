@@ -1,4 +1,4 @@
-package com.blogging.application.blog.model;
+package com.blogging_application.blog.model;
 
 import java.util.Objects;
 

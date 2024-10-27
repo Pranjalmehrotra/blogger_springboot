@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.blogging.application.blog.model.CommentModel;
+import com.blogging_application.blog.model.CommentModel;
 
 @Service
 public class CommentServiceImpl implements CommentService {

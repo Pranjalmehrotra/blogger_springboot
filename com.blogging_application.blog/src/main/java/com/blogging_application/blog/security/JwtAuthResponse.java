@@ -1,4 +1,4 @@
-package com.blogging_apllication.blog.security;
+package com.blogging_application.blog.security;
 
 
 public class JwtAuthResponse {

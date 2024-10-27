@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.blogging.application.blog.model.CategoryModel;
+import com.blogging_application.blog.model.CategoryModel;
 import com.blogging_application.blog.entity.CategoryEntity;
 import com.blogging_application.blog.exceptions.ResourceNotFoundException;
 import com.blogging_application.blog.repository.CategoryRepository;

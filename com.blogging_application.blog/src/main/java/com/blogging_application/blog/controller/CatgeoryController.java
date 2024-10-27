@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.blogging.application.blog.model.CategoryModel;
+import com.blogging_application.blog.model.CategoryModel;
 import com.blogging_application.blog.service.CategoryService;
 
 import jakarta.validation.Valid;

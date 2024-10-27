@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.blogging.application.blog.model.CommentModel;
+import com.blogging_application.blog.model.CommentModel;
 
 public interface CommentService {
 	

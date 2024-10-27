@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.blogging.application.blog.model.UserModel;
+import com.blogging_application.blog.model.UserModel;
 import com.blogging_application.blog.entity.UserEntity;
 import com.blogging_application.blog.entity.UserRoleEntity;
 import com.blogging_application.blog.exceptions.ResourceNotFoundException;

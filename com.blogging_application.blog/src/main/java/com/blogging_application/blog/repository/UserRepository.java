@@ -12,7 +12,7 @@ import com.blogging_application.blog.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity,Integer> {
 	
-	@Query("Select userEntity from UserEntity userEntity where userEntity.emailAddress = :userEmail")
+	@Query("Select userEntity from UserEntity userEntity where userEntity.emailAddress like :userEmail")
 	Optional<UserEntity>findByUserEmail(@Param("userEmail") String userEmail);
 	
 	

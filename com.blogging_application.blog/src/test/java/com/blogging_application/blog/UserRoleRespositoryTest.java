@@ -13,7 +13,7 @@
  * import com.blogging_application.blog.entity.UserRoleEntity; import
  * com.blogging_application.blog.repository.UserRoleRepository;
  * 
- * @DataJpaTest
+ * JpaTest
  * 
  * @AutoConfigureTestDatabase(replace = Replace.NONE) //@Rollback(false) public
  * class UserRoleRespositoryTest {

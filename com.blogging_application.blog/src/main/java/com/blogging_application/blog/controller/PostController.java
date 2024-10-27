@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.blogging.application.blog.model.BlogApiResponse;
-import com.blogging.application.blog.model.PaginationResponse;
-import com.blogging.application.blog.model.PostModel;
+import com.blogging_application.blog.model.BlogApiResponse;
+import com.blogging_application.blog.model.PaginationResponse;
+import com.blogging_application.blog.model.PostModel;
 import com.blogging_application.blog.service.PostService;
 
 @RestController

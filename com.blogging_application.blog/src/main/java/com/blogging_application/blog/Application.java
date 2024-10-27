@@ -11,11 +11,11 @@ import com.blogging_application.blog.repository.UserRoleRepository;
 
 //public class Application implements CommandLineRunner {
 public class Application {
-	@Autowired
+	/*@Autowired
 	UserRoleEntity userRoleEntity;
 
 	@Autowired
-	UserRoleRepository userRoleRepository;
+	UserRoleRepository userRoleRepository;*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

@@ -1,7 +1,7 @@
 package com.blogging_application.blog.service;
 import java.util.List;
-import com.blogging.application.blog.model.PaginationResponse;
-import com.blogging.application.blog.model.PostModel;
+import com.blogging_application.blog.model.PaginationResponse;
+import com.blogging_application.blog.model.PostModel;
 
 public interface PostService {
 
