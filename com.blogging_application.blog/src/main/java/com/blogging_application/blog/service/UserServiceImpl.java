@@ -8,15 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.blogging_application.blog.model.UserModel;
 import com.blogging_application.blog.entity.UserEntity;
 import com.blogging_application.blog.entity.UserRoleEntity;
 import com.blogging_application.blog.exceptions.ResourceNotFoundException;
 import com.blogging_application.blog.repository.UserRepository;
 import com.blogging_application.blog.repository.UserRoleRepository;
-
-import utils.BlogConstants;
+import com.blogging_application.blog.utils.BlogConstants;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,27 +27,89 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	PasswordEncoder bPasswordEncoder;
-	
+
 	@Autowired
 	private UserRoleRepository userRoleRepository;
 
 	UserEntity userEntity = new UserEntity();
 	UserModel userModel = new UserModel();
 
+	/*
+	 * @Override public UserModel createUser(UserModel userModel) { // TODO
+	 * Auto-generated method stub
+	 * 
+	 * // Here, we are taking userModel object and convert it into the userEntity
+	 * which // is the // required for inserting into the repository. userEntity =
+	 * this.modelToEntityModelMapper(userModel); UserEntity newUserEntity =
+	 * userRepository.save(userEntity);
+	 * 
+	 * // Here ,we are now converting the userEntity object to the userModel because
+	 * // the return type of the // method is of UserModel. return
+	 * this.entityToModel(newUserEntity); }
+	 */
+
 	@Override
-	public UserModel createUser(UserModel userModel) {
-		// TODO Auto-generated method stub
+	public UserModel registerNewUser(UserModel registerUserModel) {
+		/*
+		 * byte[] salt = new String("622836429").getBytes(); int iterationCount = 10000;
+		 * int keyLength = 128;
+		 * 
+		 * secretKey object = new secretKey(); SecretKeySpec key =
+		 * object.generateSecretKey( password.toCharArray(), salt, iterationCount,
+		 * keyLength);
+		 * 
+		 * String originalPassword = password; System.out.println("Original password: "
+		 * + originalPassword); String encryptedPassword =
+		 * object.encrypt(originalPassword, key);
+		 */
+		System.out.println("The values of usermodel are::" + registerUserModel.toString());
+		/*
+		 * if (userEntity.getEmailAddress() != null &&
+		 * !(userEntity.getEmailAddress().isEmpty()) &&
+		 * userEntity.getEmailAddress().equalsIgnoreCase(registerUserModel.
+		 * getEmailAddress())) { System.out.println("Email address matched");
+		 * userModel.setEmailAddress("Email address already exists"); return userModel;
+		 * }
+		 */
+		if(findByUserEmail("%"+registerUserModel.getEmailAddress()+"%") != null) {
+			System.out.println("user name matched");
+			userModel.setEmailAddress("Email address already exists");
+			return userModel;
+			
+		}
+		
+		if(findByUserName(registerUserModel.getUserName()) != null) {
+			System.out.println("user name matched");
+			userModel.setUserName("User Name already exists");
+			return userModel;
+			
+		}
+		
+		if(findByUserPhoneNumber(registerUserModel.getMobileNumber()) != null) {
+			System.out.println("user name matched");
+			userModel.setMobileNumber("Mobile number already exists");
+			return userModel;
+			
+		}
+		 else {
 
-		// Here, we are taking userModel object and convert it into the userEntity which
-		// is the
-		// required for inserting into the repository.
-		userEntity = this.modelToEntityModelMapper(userModel);
-		UserEntity newUserEntity = userRepository.save(userEntity);
+			// Encoding the password send from the frontend
+			String encodedPassword = bPasswordEncoder.encode(registerUserModel.getPassword());
+			System.out.println("The raw-passord is ::" + registerUserModel.getPassword());
 
-		// Here ,we are now converting the userEntity object to the userModel because
-		// the return type of the
-		// method is of UserModel.
-		return this.entityToModel(newUserEntity);
+			System.out.println("The enocded passord is ::" + encodedPassword);
+
+			UserEntity registerUserEntity = modelMapper.map(registerUserModel, UserEntity.class);
+			registerUserEntity.setPassword(encodedPassword);
+
+			// Setting the predefined roles to the user.
+			UserRoleEntity userRoleEntity = this.userRoleRepository.findById(BlogConstants.NORMAL_USER).get();
+			registerUserEntity.getRoles().add(userRoleEntity);
+
+			UserEntity registeredUser = this.userRepository.save(registerUserEntity);
+			// TODO Auto-generated method stub
+			return this.modelMapper.map(registeredUser, UserModel.class);
+		}
 	}
 
 	@Override
@@ -72,14 +132,55 @@ public class UserServiceImpl implements UserService {
 		return this.entityToModel(userEntity);
 	}
 
+	/*
+	 * @Override public UserEntity findByUserEmail(String userEmail) {
+	 * 
+	 * // TODO Auto-generated method stub userEntity =
+	 * this.userRepository.findByUserEmail("%" + userEmail + "%") .orElseThrow(() ->
+	 * new UsernameNotFoundException("User Name not found is ::" + userEmail));
+	 * return userEntity; // return this.entityToModel(userEntity); }
+	 */
+	
 	@Override
 	public UserEntity findByUserEmail(String userEmail) {
 
 		// TODO Auto-generated method stub
-		userEntity = this.userRepository.findByUserEmail("%" + userEmail + "%")
-				.orElseThrow(() -> new UsernameNotFoundException("User Name not found is ::" + userEmail));
+		userEntity = this.userRepository.findByUserEmailRegisterUser("%" + userEmail + "%");
 		return userEntity;
 		// return this.entityToModel(userEntity);
+	}
+	
+	
+	/*
+	 * @Override public UserEntity findByUserName(String userName) { // TODO
+	 * Auto-generated method stub userEntity =
+	 * this.userRepository.findByUserName(userName). orElseThrow(()-> { return new
+	 * UsernameNotFoundException("User name not found is::" + userName); }); return
+	 * userEntity; }
+	 */
+	
+	@Override
+	public UserEntity findByUserName(String userName) {
+		// TODO Auto-generated method stub
+		userEntity = this.userRepository.findByUserName(userName);
+		return userEntity;
+	}
+
+	/*
+	 * @Override public UserEntity findByUserPhoneNumber(String userPhoneNumber) {
+	 * 
+	 * // TODO Auto-generated method stub userEntity =
+	 * this.userRepository.findByMobileNumber(userPhoneNumber). orElseThrow(()->{
+	 * return new UsernameNotFoundException("User name not found is::" +
+	 * userPhoneNumber); }); return userEntity; }
+	 */
+	
+	@Override
+	public UserEntity findByUserPhoneNumber(String userPhoneNumber) {
+		
+		// TODO Auto-generated method stub
+		userEntity = this.userRepository.findByMobileNumber(userPhoneNumber);
+				return userEntity;
 	}
 
 	@Override
@@ -89,24 +190,6 @@ public class UserServiceImpl implements UserService {
 				.collect(Collectors.toList());
 		// TODO Auto-generated method stub
 		return userModelList;
-	}
-	
-	@Override
-	public UserModel registerNewUser(UserModel registerUserModel) {
-
-		//Encoding the password send from the frontend
-		String encodedPassword = bPasswordEncoder.encode(registerUserModel.getPassword());
-		
-		UserEntity registerUserEntity = modelMapper.map(registerUserModel, UserEntity.class);
-		registerUserEntity.setPassword(encodedPassword);
-		
-		//Setting the predefined roles to the user.
-		UserRoleEntity userRoleEntity = this.userRoleRepository.findById(BlogConstants.NORMAL_USER).get();
-		registerUserEntity.getRoles().add(userRoleEntity);
-		
-		UserEntity registeredUser = this.userRepository.save(registerUserEntity);
-		// TODO Auto-generated method stub
-		return this.modelMapper.map(registeredUser, UserModel.class);
 	}
 
 	@Override

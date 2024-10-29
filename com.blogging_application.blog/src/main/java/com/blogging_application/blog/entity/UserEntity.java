@@ -21,28 +21,35 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "user_signup_tbl")
+@Table(name = "user_signup_tbl",uniqueConstraints={@UniqueConstraint(columnNames={"userName","mobileNumber","emailAddress"})})
 public class UserEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
 	private Integer userid;
+	
+	@Column(name = "first_name",length = 100)
+	private String firstName;
+	
+	@Column(name = "last_name",length = 100)
+	private String lastName;
 
-	@Column(name = "user_name", length = 100)
+	@Column(name = "user_name", length = 100,unique = true)
 	private String userName;
 
 	/*
 	 * @Column(name = "last_name") String lastName;
 	 */
 
-	@Column(name = "mobile_number")
+	@Column(name = "mobile_number",unique = true)
 	private String mobileNumber;
 
-	@Column(name = "email_address")
+	@Column(name = "email_address",unique = true)
 	private String emailAddress;
 
 	@Column(name = "terms_of_use_acceptance")
@@ -52,7 +59,6 @@ public class UserEntity {
 	private Integer privacyAcceptance;
 
 	@Column(name = "hashed_password")
-	@NotBlank(message = "password cannot be empty")
 	private String password;
 
 	@Column(name = "about")
@@ -199,17 +205,37 @@ public class UserEntity {
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 
 	public UserEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserEntity(Integer userid, String userName, String mobileNumber, String emailAddress,
-			Integer termsOfUseAcceptance, Integer privacyAcceptance, String password, String about, Timestamp createdAt,
-			Timestamp updatedAt) {
+	public UserEntity(Integer userid, String firstName, String lastName, String userName, String mobileNumber,
+			String emailAddress, Integer termsOfUseAcceptance, Integer privacyAcceptance, String password, String about,
+			Timestamp createdAt, Timestamp updatedAt, List<PostEntity> listPostForOneUser,
+			Set<CommentEntity> listCommentForOneUser, Set<UserRoleEntity> roles) {
 		super();
 		this.userid = userid;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.userName = userName;
 		this.mobileNumber = mobileNumber;
 		this.emailAddress = emailAddress;
@@ -219,14 +245,22 @@ public class UserEntity {
 		this.about = about;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.listPostForOneUser = listPostForOneUser;
+		this.listCommentForOneUser = listCommentForOneUser;
+		this.roles = roles;
 	}
 
 	@Override
 	public String toString() {
-		return "UserEntity [userid=" + userid + ", userName=" + userName + ", mobileNumber=" + mobileNumber
-				+ ", emailAddress=" + emailAddress + ", termsOfUseAcceptance=" + termsOfUseAcceptance
-				+ ", privacyAcceptance=" + privacyAcceptance + ", password=" + password + ", about=" + about
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+		return "UserEntity [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
+				+ userName + ", mobileNumber=" + mobileNumber + ", emailAddress=" + emailAddress
+				+ ", termsOfUseAcceptance=" + termsOfUseAcceptance + ", privacyAcceptance=" + privacyAcceptance
+				+ ", password=" + password + ", about=" + about + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + ", listPostForOneUser=" + listPostForOneUser + ", listCommentForOneUser="
+				+ listCommentForOneUser + ", roles=" + roles + "]";
 	}
+
+	
+	
 
 }

@@ -1,5 +1,4 @@
-package com.blogging_application.blog.security;
-
+package com.blogging_application.blog.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,8 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogging_application.blog.model.AuthModelRequest;
+import com.blogging_application.blog.model.JwtAuthResponse;
 import com.blogging_application.blog.model.UserModel;
+import com.blogging_application.blog.service.UserDetailsServiceImpl;
 import com.blogging_application.blog.service.UserService;
+import com.blogging_application.blog.utils.JwtTokenHelper;
 
 import jakarta.validation.Valid;
 
@@ -34,12 +37,12 @@ public class AuthController {
     private JwtTokenHelper jwtTokenHelper;
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JwtAuthResponse> login(@RequestBody AuthModel authModel) throws Exception {
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody AuthModelRequest authModelRequest) throws Exception {
         System.out.println("Executing login method");
-        authenticate(authModel.getEmail(), authModel.getPassword());
+        authenticate(authModelRequest.getEmail(), authModelRequest.getPassword());
 
         // we need to generate the jwt token
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authModel.getEmail());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authModelRequest.getEmail());
 
         final String token = jwtTokenHelper.generateToken(userDetails);
 
@@ -64,6 +67,7 @@ public class AuthController {
 
     @PostMapping("/register-new-user")
     public ResponseEntity<UserModel> registerNewUser(@Valid @RequestBody UserModel userModel) {
+    	System.out.println("AuthController.registerNewUser()");
         UserModel newUserModel = this.userService.registerNewUser(userModel);
 
         return new ResponseEntity<UserModel>(newUserModel, HttpStatus.CREATED);

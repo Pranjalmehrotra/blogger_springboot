@@ -1,4 +1,4 @@
-package utils;
+package com.blogging_application.blog.utils;
 
 import org.springframework.util.ObjectUtils;
 

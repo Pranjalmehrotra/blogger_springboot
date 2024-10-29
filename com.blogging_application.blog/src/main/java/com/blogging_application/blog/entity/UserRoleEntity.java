@@ -77,19 +77,6 @@ public class UserRoleEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-
-	public UserRoleEntity(Integer userid) {
-		super();
-		this.roleId = userid;
-	}
-
-	public UserRoleEntity(String userName, String userDescription) {
-		super();
-		// this.userid = roleId;
-		this.roleName = userName;
-		this.roleDescription = userDescription;
-	}
 	
 	public UserRoleEntity(Integer roleId, String roleName, String roleDescription) {
 		super();

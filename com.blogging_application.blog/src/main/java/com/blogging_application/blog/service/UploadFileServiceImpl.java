@@ -8,7 +8,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import utils.CommonMethods;
+
+import com.blogging_application.blog.utils.CommonMethods;
 
 @Service
 public class UploadFileServiceImpl implements UploadFileService {

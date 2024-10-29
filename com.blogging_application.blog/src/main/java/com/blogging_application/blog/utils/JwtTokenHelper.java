@@ -1,4 +1,4 @@
-package com.blogging_application.blog.security;
+package com.blogging_application.blog.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;

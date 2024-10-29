@@ -1,11 +1,11 @@
-package com.blogging_application.blog.security;
+package com.blogging_application.blog.model;
 
-public class AuthModel {
+public class AuthModelRequest {
     private String email;
     private String password;
 
 
-    public AuthModel() {
+    public AuthModelRequest() {
     }
 
     public String getEmail() {
@@ -26,10 +26,10 @@ public class AuthModel {
 
     @Override
     public String toString() {
-        return "AuthModel [email=" + email + ", password=" + password + "]";
+        return "AuthModelRequest [email=" + email + ", password=" + password + "]";
     }
 
-    public AuthModel(String email, String password) {
+    public AuthModelRequest(String email, String password) {
         super();
         this.email = email;
         this.password = password;

@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.blogging_application.blog.service.UserDetailsServiceImpl;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -46,15 +48,12 @@ public class WebSecurityConfig {
 
     }
 
-    @Bean
-    ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
+	/*
+	 * @Bean ModelMapper modelMapper() { return new ModelMapper(); }
+	 * 
+	 * @Bean public static PasswordEncoder passwordEncoder() { return
+	 * NoOpPasswordEncoder.getInstance(); }
+	 */
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

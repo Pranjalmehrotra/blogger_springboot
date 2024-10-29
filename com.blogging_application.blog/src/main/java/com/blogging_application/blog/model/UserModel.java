@@ -4,35 +4,23 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import org.checkerframework.common.aliasing.qual.Unique;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class UserModel {
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(about, emailAddress, mobileNumber, password, privacyAcceptance, termsOfUseAcceptance,
-				userName, userid);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserModel other = (UserModel) obj;
-		return Objects.equals(about, other.about) && Objects.equals(emailAddress, other.emailAddress)
-				&& Objects.equals(mobileNumber, other.mobileNumber) && Objects.equals(password, other.password)
-				&& Objects.equals(privacyAcceptance, other.privacyAcceptance)
-				&& Objects.equals(termsOfUseAcceptance, other.termsOfUseAcceptance)
-				&& Objects.equals(userName, other.userName) && Objects.equals(userid, other.userid);
-	}
-
+	
 	private Integer userid;
+	
+	@NotBlank(message = "First Name cannot be empty")
+	@Size(min = 4, max = 20, message = "first name must be minimum of 4 characters")
+	private String firstName;
+	
+	@NotBlank(message = "Last Name cannot be empty")
+	@Size(min = 4, max = 20, message = "first name must be minimum of 4 characters")
+	private String lastName;
 
 	@NotBlank(message = "Username cannot be empty")
 	@Size(min = 4, max = 20, message = "User name must be minimum of 4 characters")
@@ -135,18 +123,40 @@ public class UserModel {
 	public void setAbout(String about) {
 		this.about = about;
 	}
+	
+	public Integer getUserid() {
+		return userid;
+	}
+
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
 
 	@Override
 	public String toString() {
-		return "UserModel [userid=" + userid + ", userName=" + userName + ", mobileNumber=" + mobileNumber
-				+ ", emailAddress=" + emailAddress + ", termsOfUseAcceptance=" + termsOfUseAcceptance
-				+ ", privacyAcceptance=" + privacyAcceptance + ", password=" + password + ", about=" + about + "]";
+		return "UserModel [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
+				+ userName + ", mobileNumber=" + mobileNumber + ", emailAddress=" + emailAddress
+				+ ", termsOfUseAcceptance=" + termsOfUseAcceptance + ", privacyAcceptance=" + privacyAcceptance
+				+ ", password=" + password + ", about=" + about + ", roles=" + roles + "]";
 	}
 
-	public UserModel(Integer userid, String userName, String mobileNumber, String emailAddress,
-			Integer termsOfUseAcceptance, Integer privacyAcceptance, String password, String about) {
+	public UserModel(Integer userid,
+			@NotBlank(message = "First Name cannot be empty") @Size(min = 4, max = 20, message = "first name must be minimum of 4 characters") String firstName,
+			@NotBlank(message = "Last Name cannot be empty") @Size(min = 4, max = 20, message = "first name must be minimum of 4 characters") String lastName,
+			@NotBlank(message = "Username cannot be empty") @Size(min = 4, max = 20, message = "User name must be minimum of 4 characters") String userName,
+			@NotBlank(message = "Mobile Number cannot be empty") @Size(min = 10, max = 10, message = "Mobile Number must be of 10 digits") String mobileNumber,
+			@NotBlank(message = "Email cannot be empty") @Email(message = "Your email address is not valid") String emailAddress,
+			Integer termsOfUseAcceptance, Integer privacyAcceptance,
+			@NotBlank(message = "password cannot be empty") @Size(min = 8, max = 12, message = "Password must be minimum of 8 charcaters and maximum of 12 characters") String password,
+			@NotBlank(message = "about cannot be empty") String about, Set<UserRoleModel> roles) {
 		super();
 		this.userid = userid;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.userName = userName;
 		this.mobileNumber = mobileNumber;
 		this.emailAddress = emailAddress;
@@ -154,6 +164,21 @@ public class UserModel {
 		this.privacyAcceptance = privacyAcceptance;
 		this.password = password;
 		this.about = about;
+		this.roles = roles;
 	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	
 
 }
